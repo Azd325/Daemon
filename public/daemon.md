@@ -40,6 +40,7 @@ Missions (M) - My approaches to addressing these problems:
 
 [FAVORITE_BOOKS]
 
+- "1929" (currently reading)
 - "Mathematica", by David Bessis
 - "Meditations" by Marcus Aurelius
 - "The Obstacle Is the Way" by Ryan Holiday
@@ -74,12 +75,12 @@ Missions (M) - My approaches to addressing these problems:
 [DAILY_ROUTINE]
 
 - 8AM Wakeup
-- Outside walk in the sunlight for 5-10 minutes
+- Outside 🚶🏼‍➡️Walk in the ☀️Sunlight for 5-10 minutes
 - Avoid inputs that could be interesting / distracting
-- Vitamins / Supplements / Nootropics
-- Small Protein shake
-- Caffeine
-- Start agenda
+- 💊 Vitamins / Supplements / Nootropics
+- 🥛 Small Protein shake
+- ☕ Caffeine
+- 📅 Start agenda
 - Chipotle Bowl (Brown Rice / Black Beans) around lunch sometimes
 - Protein Shake for lunch sometimes
 - Try to walk around 5-30 minutes near dusk (not strict on this)
@@ -102,3 +103,9 @@ Missions (M) - My approaches to addressing these problems:
 
 - Recession-like shock caused by AI job loss by 2027 (Chances About Even)
 - We'll have AGI between 2025 and 2028 (Almost Certain)
+- Open-source models will largely catch up to closed-source models (Probable)
+- Apple is about to go from the worst AI implementation to the best (Probable)
+- Everyone, including people, will have an API (Almost Certain)
+- Personal daemons will broadcast preferences (Almost Certain)
+- Venues personalize based on customer preferences (Almost Certain)
+- People will lack meaning and look for it in games (Almost Certain)

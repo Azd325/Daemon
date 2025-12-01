@@ -78,6 +78,53 @@ npx wrangler pages deploy dist --project-name=your-daemon-name
 3. **Update branding**: Replace images in `public/` with your own
 4. **Deploy**: Push to your own Cloudflare Pages project
 
+## Architecture
+
+### The Data File
+
+The `public/daemon.md` file is the **source of truth** for your daemon's information. It uses a simple section-based format:
+
+```markdown
+[ABOUT]
+Your bio goes here...
+
+[MISSION]
+Your mission statement...
+
+[FAVORITE_BOOKS]
+- Book 1
+- Book 2
+```
+
+Available sections: `ABOUT`, `CURRENT_LOCATION`, `MISSION`, `TELOS`, `FAVORITE_BOOKS`, `FAVORITE_MOVIES`, `FAVORITE_PODCASTS`, `DAILY_ROUTINE`, `PREFERENCES`, `PREDICTIONS`
+
+### How the Live Site Works
+
+The live site at [daemon.danielmiessler.com](https://daemon.danielmiessler.com) uses a two-component architecture:
+
+1. **This repo** → The Astro website (what you're looking at)
+2. **MCP Server** → A separate Cloudflare Worker that serves the daemon data via API
+
+The website's dashboard fetches data from the MCP server at `mcp.daemon.danielmiessler.com`. This enables real-time API access for AI systems while the static site provides the human-readable interface.
+
+### For Forkers: MCP Server Setup (Advanced)
+
+If you want the full experience with a queryable MCP endpoint:
+
+1. The MCP server is a separate Cloudflare Worker that:
+   - Parses your `daemon.md` file
+   - Stores the data in Cloudflare KV
+   - Serves it via JSON-RPC (MCP protocol)
+
+2. You'll need to:
+   - Create a Cloudflare Worker for your MCP endpoint
+   - Set up a KV namespace for data storage
+   - Update the dashboard component to point to your MCP URL
+
+3. The MCP server code and setup instructions will be documented separately.
+
+**Note**: The static site works without the MCP component—you just won't have the live API functionality until you set up your own MCP server.
+
 ## Why Should You Have a Daemon?
 
 1. **Own your digital identity**: Your daemon is yours, hosted where you choose
