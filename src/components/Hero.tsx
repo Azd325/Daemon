@@ -29,7 +29,7 @@ export function Hero() {
     fetchLocation();
   }, []);
   return (
-    <section className="relative pt-20 pb-6 px-6">
+    <section className="relative pt-28 pb-6 px-6">
       <div className="max-w-4xl mx-auto text-center">
         {/* Title + Badge inline */}
         <motion.div
