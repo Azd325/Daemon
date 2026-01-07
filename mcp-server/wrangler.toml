@@ -1,0 +1,16 @@
+name = "daemon-mcp-server"
+main = "worker.ts"
+compatibility_date = "2025-01-07"
+workers_dev = true
+
+# Custom domain route
+routes = [
+  { pattern = "mcp.daemon.timkleinschmidt.com", custom_domain = true }
+]
+
+# Disable observability to reduce costs
+[observability]
+enabled = false
+
+[observability.logs]
+enabled = false

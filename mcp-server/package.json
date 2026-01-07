@@ -1,0 +1,13 @@
+{
+  "name": "daemon-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server for Tim Kleinschmidt's Daemon",
+  "main": "worker.ts",
+  "scripts": {
+    "dev": "bunx wrangler dev",
+    "deploy": "bunx wrangler deploy"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250110.0"
+  }
+}
