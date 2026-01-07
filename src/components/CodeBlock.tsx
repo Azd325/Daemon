@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Check, Copy } from 'lucide-react';
 
 interface CodeBlockProps {
