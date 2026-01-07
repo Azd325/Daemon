@@ -133,7 +133,7 @@ function StatusBar({
       className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-border-default bg-bg-secondary/80 backdrop-blur-sm px-4 py-3 mb-6"
     >
       <div className="flex items-center gap-4">
-        <span className="font-mono font-bold text-sm text-accent">DAEMON://MIESSLER</span>
+        <span className="font-mono font-bold text-sm text-accent">DAEMON://KLEINSCHMIDT</span>
         <div className="flex items-center gap-2">
           <span className={`w-2 h-2 rounded-full ${isConnected ? 'bg-success animate-pulse-slow' : 'bg-error'}`} />
           <span className="font-mono text-xs text-text-secondary">
@@ -169,7 +169,7 @@ export function DaemonDashboard() {
     setError(null);
 
     try {
-      const toolsResponse = await fetch('https://mcp.daemon.danielmiessler.com', {
+      const toolsResponse = await fetch('https://mcp.daemon.timkleinschmidt.com', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ jsonrpc: '2.0', method: 'tools/list', id: 1 })
@@ -180,7 +180,7 @@ export function DaemonDashboard() {
         setToolCount(toolsData.result?.tools?.length || 0);
       }
 
-      const dataResponse = await fetch('https://mcp.daemon.danielmiessler.com', {
+      const dataResponse = await fetch('https://mcp.daemon.timkleinschmidt.com', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -270,215 +270,233 @@ export function DaemonDashboard() {
       />
 
       {/* TIER 1: Core Purpose - 2 Columns */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Mission */}
-        <ErrorBoundary>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.05 }}
-            className="rounded-xl border border-border-default bg-bg-secondary/80 backdrop-blur-sm pt-5 px-5 pb-2 flex flex-col max-h-72"
-          >
-            <div className="flex items-center gap-2 mb-3 shrink-0">
-              <Target className="w-5 h-5 text-accent" />
-              <span className="font-mono text-sm font-semibold tracking-wider text-text-tertiary uppercase">Mission</span>
-            </div>
-            <div className="overflow-y-auto flex-1 pr-1">
-              <p className="font-body text-base text-text-secondary leading-relaxed pb-3">
-                <SafeText text={daemonData.mission} fallback="Mission not available" />
-              </p>
-            </div>
-          </motion.div>
-        </ErrorBoundary>
+      {(daemonData.mission || telosItems.length > 0) && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Mission */}
+          {daemonData.mission && (
+            <ErrorBoundary>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.05 }}
+                className="rounded-xl border border-border-default bg-bg-secondary/80 backdrop-blur-sm pt-5 px-5 pb-2 flex flex-col max-h-72"
+              >
+                <div className="flex items-center gap-2 mb-3 shrink-0">
+                  <Target className="w-5 h-5 text-accent" />
+                  <span className="font-mono text-sm font-semibold tracking-wider text-text-tertiary uppercase">Mission</span>
+                </div>
+                <div className="overflow-y-auto flex-1 pr-1">
+                  <p className="font-body text-base text-text-secondary leading-relaxed pb-3">
+                    <SafeText text={daemonData.mission} fallback="Mission not available" />
+                  </p>
+                </div>
+              </motion.div>
+            </ErrorBoundary>
+          )}
 
-        {/* TELOS */}
-        <ErrorBoundary>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="rounded-xl border border-border-default bg-bg-secondary/80 backdrop-blur-sm pt-5 px-5 pb-2 flex flex-col max-h-72"
-          >
-            <div className="flex items-center justify-between mb-3 shrink-0">
-              <div className="flex items-center gap-2">
-                <Compass className="w-5 h-5 text-accent" />
-                <span className="font-mono text-sm font-semibold tracking-wider text-text-tertiary uppercase">TELOS Framework</span>
-              </div>
-              <a href="/telos" className="text-sm text-brand hover:underline">View all</a>
-            </div>
-            <div className="overflow-y-auto flex-1 pr-1">
-              <div className="space-y-2 pb-3">
-                {telosItems.length > 0 ? (
-                  telosItems.slice(0, 4).map((item, i) => (
-                    <div key={i} className="flex gap-2 text-sm">
-                      <span className="font-mono font-bold text-accent shrink-0">{extractTelosId(item)}</span>
-                      <span className="text-text-secondary">{extractTelosText(item)}</span>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-sm text-text-tertiary italic">TELOS not available</p>
-                )}
-              </div>
-            </div>
-          </motion.div>
-        </ErrorBoundary>
-      </div>
+          {/* TELOS */}
+          {telosItems.length > 0 && (
+            <ErrorBoundary>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="rounded-xl border border-border-default bg-bg-secondary/80 backdrop-blur-sm pt-5 px-5 pb-2 flex flex-col max-h-72"
+              >
+                <div className="flex items-center justify-between mb-3 shrink-0">
+                  <div className="flex items-center gap-2">
+                    <Compass className="w-5 h-5 text-accent" />
+                    <span className="font-mono text-sm font-semibold tracking-wider text-text-tertiary uppercase">TELOS Framework</span>
+                  </div>
+                  <a href="/telos" className="text-sm text-brand hover:underline">View all</a>
+                </div>
+                <div className="overflow-y-auto flex-1 pr-1">
+                  <div className="space-y-2 pb-3">
+                    {telosItems.slice(0, 4).map((item, i) => (
+                      <div key={i} className="flex gap-2 text-sm">
+                        <span className="font-mono font-bold text-accent shrink-0">{extractTelosId(item)}</span>
+                        <span className="text-text-secondary">{extractTelosText(item)}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            </ErrorBoundary>
+          )}
+        </div>
+      )}
 
       {/* TIER 2: Recommendations - 3 Columns */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {/* Books */}
-        <ErrorBoundary>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15 }}
-            className="rounded-xl border border-border-default bg-bg-secondary/80 backdrop-blur-sm pt-5 px-5 pb-2 flex flex-col max-h-64"
-          >
-            <div className="flex items-center justify-between mb-3 shrink-0">
-              <div className="flex items-center gap-2">
-                <BookMarked className="w-5 h-5 text-text-tertiary" />
-                <span className="font-mono text-sm font-semibold tracking-wider text-text-tertiary uppercase">Books</span>
-              </div>
-              <span className="text-xs text-text-tertiary">{daemonData.favorite_books?.length || 0}</span>
-            </div>
-            <div className="overflow-y-auto flex-1 pr-1">
-              <div className="space-y-2 pb-3">
-                <SafeList items={daemonData.favorite_books} fallback="No books listed" />
-              </div>
-            </div>
-          </motion.div>
-        </ErrorBoundary>
+      {(daemonData.favorite_books?.length || daemonData.favorite_movies?.length || daemonData.predictions?.length) && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Books */}
+          {daemonData.favorite_books && daemonData.favorite_books.length > 0 && (
+            <ErrorBoundary>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15 }}
+                className="rounded-xl border border-border-default bg-bg-secondary/80 backdrop-blur-sm pt-5 px-5 pb-2 flex flex-col max-h-64"
+              >
+                <div className="flex items-center justify-between mb-3 shrink-0">
+                  <div className="flex items-center gap-2">
+                    <BookMarked className="w-5 h-5 text-text-tertiary" />
+                    <span className="font-mono text-sm font-semibold tracking-wider text-text-tertiary uppercase">Books</span>
+                  </div>
+                  <span className="text-xs text-text-tertiary">{daemonData.favorite_books.length}</span>
+                </div>
+                <div className="overflow-y-auto flex-1 pr-1">
+                  <div className="space-y-2 pb-3">
+                    <SafeList items={daemonData.favorite_books} fallback="No books listed" />
+                  </div>
+                </div>
+              </motion.div>
+            </ErrorBoundary>
+          )}
 
-        {/* Movies */}
-        <ErrorBoundary>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="rounded-xl border border-border-default bg-bg-secondary/80 backdrop-blur-sm pt-5 px-5 pb-2 flex flex-col max-h-64"
-          >
-            <div className="flex items-center justify-between mb-3 shrink-0">
-              <div className="flex items-center gap-2">
-                <Film className="w-5 h-5 text-text-tertiary" />
-                <span className="font-mono text-sm font-semibold tracking-wider text-text-tertiary uppercase">Movies</span>
-              </div>
-              <span className="text-xs text-text-tertiary">{daemonData.favorite_movies?.length || 0}</span>
-            </div>
-            <div className="overflow-y-auto flex-1 pr-1">
-              <div className="space-y-2 pb-3">
-                <SafeList items={daemonData.favorite_movies} fallback="No movies listed" />
-              </div>
-            </div>
-          </motion.div>
-        </ErrorBoundary>
+          {/* Movies */}
+          {daemonData.favorite_movies && daemonData.favorite_movies.length > 0 && (
+            <ErrorBoundary>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="rounded-xl border border-border-default bg-bg-secondary/80 backdrop-blur-sm pt-5 px-5 pb-2 flex flex-col max-h-64"
+              >
+                <div className="flex items-center justify-between mb-3 shrink-0">
+                  <div className="flex items-center gap-2">
+                    <Film className="w-5 h-5 text-text-tertiary" />
+                    <span className="font-mono text-sm font-semibold tracking-wider text-text-tertiary uppercase">Movies</span>
+                  </div>
+                  <span className="text-xs text-text-tertiary">{daemonData.favorite_movies.length}</span>
+                </div>
+                <div className="overflow-y-auto flex-1 pr-1">
+                  <div className="space-y-2 pb-3">
+                    <SafeList items={daemonData.favorite_movies} fallback="No movies listed" />
+                  </div>
+                </div>
+              </motion.div>
+            </ErrorBoundary>
+          )}
 
-        {/* Predictions */}
-        <ErrorBoundary>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.25 }}
-            className="rounded-xl border border-border-default bg-bg-secondary/80 backdrop-blur-sm pt-5 px-5 pb-2 flex flex-col max-h-64"
-          >
-            <div className="flex items-center justify-between mb-3 shrink-0">
-              <div className="flex items-center gap-2">
-                <TrendingUp className="w-5 h-5 text-text-tertiary" />
-                <span className="font-mono text-sm font-semibold tracking-wider text-text-tertiary uppercase">Predictions</span>
-              </div>
-              <span className="text-xs text-text-tertiary">{daemonData.predictions?.length || 0}</span>
-            </div>
-            <div className="overflow-y-auto flex-1 pr-1">
-              <div className="space-y-2 pb-3">
-                <SafeList items={daemonData.predictions} fallback="No predictions listed" />
-              </div>
-            </div>
-          </motion.div>
-        </ErrorBoundary>
-      </div>
+          {/* Predictions */}
+          {daemonData.predictions && daemonData.predictions.length > 0 && (
+            <ErrorBoundary>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25 }}
+                className="rounded-xl border border-border-default bg-bg-secondary/80 backdrop-blur-sm pt-5 px-5 pb-2 flex flex-col max-h-64"
+              >
+                <div className="flex items-center justify-between mb-3 shrink-0">
+                  <div className="flex items-center gap-2">
+                    <TrendingUp className="w-5 h-5 text-text-tertiary" />
+                    <span className="font-mono text-sm font-semibold tracking-wider text-text-tertiary uppercase">Predictions</span>
+                  </div>
+                  <span className="text-xs text-text-tertiary">{daemonData.predictions.length}</span>
+                </div>
+                <div className="overflow-y-auto flex-1 pr-1">
+                  <div className="space-y-2 pb-3">
+                    <SafeList items={daemonData.predictions} fallback="No predictions listed" />
+                  </div>
+                </div>
+              </motion.div>
+            </ErrorBoundary>
+          )}
+        </div>
+      )}
 
       {/* TIER 3: Context - 3 Columns */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {/* Preferences */}
-        <ErrorBoundary>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="rounded-xl border border-border-subtle bg-bg-secondary/60 backdrop-blur-sm pt-5 px-5 pb-2 flex flex-col max-h-64"
-          >
-            <div className="flex items-center gap-2 mb-3 shrink-0">
-              <Settings className="w-5 h-5 text-text-tertiary" />
-              <span className="font-mono text-sm font-semibold tracking-wider text-text-tertiary uppercase">Preferences</span>
-            </div>
-            <div className="overflow-y-auto flex-1 pr-1">
-              <div className="space-y-2 pb-3">
-                <SafeList
-                  items={daemonData.preferences}
-                  fallback="No preferences listed"
-                  renderItem={(pref, i) => (
-                    <p key={i} className="text-sm text-text-tertiary">{pref}</p>
-                  )}
-                />
-              </div>
-            </div>
-          </motion.div>
-        </ErrorBoundary>
+      {(daemonData.preferences?.length || daemonData.daily_routine?.length || daemonData.projects?.technical?.length) && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Preferences */}
+          {daemonData.preferences && daemonData.preferences.length > 0 && (
+            <ErrorBoundary>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="rounded-xl border border-border-subtle bg-bg-secondary/60 backdrop-blur-sm pt-5 px-5 pb-2 flex flex-col max-h-64"
+              >
+                <div className="flex items-center gap-2 mb-3 shrink-0">
+                  <Settings className="w-5 h-5 text-text-tertiary" />
+                  <span className="font-mono text-sm font-semibold tracking-wider text-text-tertiary uppercase">Preferences</span>
+                </div>
+                <div className="overflow-y-auto flex-1 pr-1">
+                  <div className="space-y-2 pb-3">
+                    <SafeList
+                      items={daemonData.preferences}
+                      fallback="No preferences listed"
+                      renderItem={(pref, i) => (
+                        <p key={i} className="text-sm text-text-tertiary">{pref}</p>
+                      )}
+                    />
+                  </div>
+                </div>
+              </motion.div>
+            </ErrorBoundary>
+          )}
 
-        {/* Daily Routine */}
-        <ErrorBoundary>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35 }}
-            className="rounded-xl border border-border-subtle bg-bg-secondary/60 backdrop-blur-sm pt-5 px-5 pb-2 flex flex-col max-h-64"
-          >
-            <div className="flex items-center justify-between mb-3 shrink-0">
-              <div className="flex items-center gap-2">
-                <Clock className="w-5 h-5 text-text-tertiary" />
-                <span className="font-mono text-sm font-semibold tracking-wider text-text-tertiary uppercase">Routine</span>
-              </div>
-              <span className="text-xs text-text-tertiary">{daemonData.daily_routine?.length || 0}</span>
-            </div>
-            <div className="overflow-y-auto flex-1 pr-1">
-              <div className="space-y-2 pb-3">
-                <SafeList
-                  items={daemonData.daily_routine}
-                  fallback="No routine listed"
-                  renderItem={(item, i) => (
-                    <p key={i} className="text-sm text-text-tertiary">{item}</p>
-                  )}
-                />
-              </div>
-            </div>
-          </motion.div>
-        </ErrorBoundary>
+          {/* Daily Routine */}
+          {daemonData.daily_routine && daemonData.daily_routine.length > 0 && (
+            <ErrorBoundary>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35 }}
+                className="rounded-xl border border-border-subtle bg-bg-secondary/60 backdrop-blur-sm pt-5 px-5 pb-2 flex flex-col max-h-64"
+              >
+                <div className="flex items-center justify-between mb-3 shrink-0">
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-5 h-5 text-text-tertiary" />
+                    <span className="font-mono text-sm font-semibold tracking-wider text-text-tertiary uppercase">Routine</span>
+                  </div>
+                  <span className="text-xs text-text-tertiary">{daemonData.daily_routine.length}</span>
+                </div>
+                <div className="overflow-y-auto flex-1 pr-1">
+                  <div className="space-y-2 pb-3">
+                    <SafeList
+                      items={daemonData.daily_routine}
+                      fallback="No routine listed"
+                      renderItem={(item, i) => (
+                        <p key={i} className="text-sm text-text-tertiary">{item}</p>
+                      )}
+                    />
+                  </div>
+                </div>
+              </motion.div>
+            </ErrorBoundary>
+          )}
 
-        {/* Projects */}
-        <ErrorBoundary>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="rounded-xl border border-border-subtle bg-bg-secondary/60 backdrop-blur-sm pt-5 px-5 pb-2 flex flex-col max-h-64"
-          >
-            <div className="flex items-center gap-2 mb-3 shrink-0">
-              <Briefcase className="w-5 h-5 text-text-tertiary" />
-              <span className="font-mono text-sm font-semibold tracking-wider text-text-tertiary uppercase">Projects</span>
-            </div>
-            <div className="overflow-y-auto flex-1 pr-1">
-              <div className="space-y-2 pb-3">
-                <SafeList
-                  items={daemonData.projects?.technical}
-                  fallback="No projects listed"
-                  renderItem={(proj, i) => (
-                    <p key={i} className="text-sm text-text-tertiary">{proj}</p>
-                  )}
-                />
-              </div>
-            </div>
-          </motion.div>
-        </ErrorBoundary>
-      </div>
+          {/* Projects */}
+          {daemonData.projects?.technical && daemonData.projects.technical.length > 0 && (
+            <ErrorBoundary>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="rounded-xl border border-border-subtle bg-bg-secondary/60 backdrop-blur-sm pt-5 px-5 pb-2 flex flex-col max-h-64"
+              >
+                <div className="flex items-center gap-2 mb-3 shrink-0">
+                  <Briefcase className="w-5 h-5 text-text-tertiary" />
+                  <span className="font-mono text-sm font-semibold tracking-wider text-text-tertiary uppercase">Projects</span>
+                </div>
+                <div className="overflow-y-auto flex-1 pr-1">
+                  <div className="space-y-2 pb-3">
+                    <SafeList
+                      items={daemonData.projects.technical}
+                      fallback="No projects listed"
+                      renderItem={(proj, i) => (
+                        <p key={i} className="text-sm text-text-tertiary">{proj}</p>
+                      )}
+                    />
+                  </div>
+                </div>
+              </motion.div>
+            </ErrorBoundary>
+          )}
+        </div>
+      )}
 
       {/* TIER 4: API Access - Centered Footer */}
       <motion.div
@@ -492,7 +510,7 @@ export function DaemonDashboard() {
             <Server className="w-5 h-5 text-text-tertiary" />
             <span className="font-mono text-sm font-semibold tracking-wider text-text-tertiary uppercase">API Access</span>
           </div>
-          <code className="font-mono text-base text-brand block mb-3">mcp.daemon.danielmiessler.com</code>
+          <code className="font-mono text-base text-brand block mb-3">mcp.daemon.timkleinschmidt.com</code>
           <p className="text-sm text-text-tertiary mb-4">Connect your AI assistant directly</p>
           <a
             href="/api/"
